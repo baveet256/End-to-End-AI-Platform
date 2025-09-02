@@ -13,6 +13,7 @@ import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Alert,AlertTitle } from "@/components/ui/alert";
+import {FaGithub, FaGoogle} from "react-icons/fa";
 
 import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form";
 import { OctagonAlertIcon } from "lucide-react";
@@ -116,8 +117,16 @@ export const SignInView  = () => {
                     
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
-                                    <Button variant="outline" type="button" className="w-full"> Google </Button>
-                                    <Button variant="outline" type="button" className="w-full"> Github </Button>
+                                    <Button disabled= {pending} onClick= {()=>{
+                                        authClient.signIn.social({
+                                            provider: "google",
+                                        })
+                                    }} variant="outline" type="button" className="w-full"> <FaGoogle/> </Button>
+                                    <Button disabled= {pending} onClick= {()=>{
+                                        authClient.signIn.social({
+                                            provider: "github",
+                                        })
+                                    }} variant="outline" type="button" className="w-full"> <FaGithub/>  </Button>
                                 </div>
                                 <div className="text-center text-sm">
                                     Don&apos;t have an account? <Link href={"/sign-up"} className="underline underline-offset-4"> sign up</Link>
