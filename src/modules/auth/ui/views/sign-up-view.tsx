@@ -17,7 +17,7 @@ import { Alert,AlertTitle } from "@/components/ui/alert";
 import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form";
 import { OctagonAlertIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const formSchema = z.object(
     {
@@ -32,6 +32,46 @@ const formSchema = z.object(
 });
 
 export const SignUpView  = () => {
+
+    const logoRef = useRef<HTMLImageElement>(null);
+const containerRef = useRef<HTMLDivElement>(null);
+
+useEffect(() => {
+  const catLogo = logoRef.current;
+  const container = containerRef.current;
+  if (!catLogo || !container) return;
+
+  const handleMouseMove = (e: MouseEvent) => {
+    const containerRect = container.getBoundingClientRect();
+    const logoRect = catLogo.getBoundingClientRect();
+
+    // cursor relative to container center
+    const centerX = containerRect.left + containerRect.width / 2;
+    const centerY = containerRect.top + containerRect.height / 2;
+
+    const offsetX = e.clientX - centerX;
+    const offsetY = e.clientY - centerY;
+
+    const distance = Math.sqrt(offsetX ** 2 + offsetY ** 2);
+    const threshold = 200; // how close before it reacts
+
+    if (distance < threshold) {
+      // movement magnitude increases when cursor is closer
+      const factor = Math.min((threshold - distance) / threshold, 1); 
+      const maxMove = 80; // max px movement
+      const moveX = -offsetX * factor * (maxMove / threshold);
+      const moveY = -offsetY * factor * (maxMove / threshold);
+
+      catLogo.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${moveX / 15}deg)`;
+    } else {
+      catLogo.style.transform = `translate(0px, 0px) rotate(0deg)`;
+    }
+  };
+
+  document.addEventListener("mousemove", handleMouseMove);
+  return () => document.removeEventListener("mousemove", handleMouseMove);
+}, []);
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -171,9 +211,13 @@ export const SignUpView  = () => {
                         </form>
                     </Form>
 
-                    <div className="bg-radial from-gray-300 to-gray-500 relative hidden md:flex flex-col gap-y-4 items-center justify-center"> 
-                        <img src="/logo.svg" alt="Image" className="h-[108px] w-[108px]"/>
-                        <p className="text-[#283841] font-semibold text-2xl"> Meow.AI</p>
+                    <div ref={containerRef}className="bg-gradient-to-b from-amber-200 via-orange-300 to-amber-600 relative hidden md:flex flex-col gap-y-4 items-center justify-center rounded-2xl shadow-lg p-8">
+                    <img ref = {logoRef}src="/logo.svg" alt="Logo" className="h-[120px] w-[120px] drop-shadow-lg" />
+
+                    <p className="font-bold text-3xl tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.7_0.18_70)] via-[oklch(0.5_0.20_85)] to-[oklch(0.3_0.22_60)] animate-gradient-shimmer hover:drop-shadow-[0_0_12px_oklch(0.75_0.2_85)] transition-all duration-500">
+                        Meow.AI
+                    </p>
+                    <span className="text-sm text-gray-700 italic">Smart like a cat 🐾</span>
                     </div>
 
                 </CardContent> 
