@@ -1,7 +1,6 @@
 "use client";
 
 import { trpc } from "@/trpc/client";
-
 export const AgentsView = () => {
   // useSuspenseQuery automatically suspends the component while fetching
   const [data] = trpc.agents.getMany.useSuspenseQuery();
