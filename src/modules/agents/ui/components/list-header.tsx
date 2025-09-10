@@ -11,8 +11,8 @@ return(
         <NewAgentDialog open = {isDialogOpen} onOpenChange={setIsDialogOpen}/>
         <div className="py-4 px-4 flex flex-col gap-y-4 ">
             <div className="flex items-center justify-between">
-            <h5 className="font-medium text-xl">My agents</h5>
-            <Button onClick={() => {setIsDialogOpen(true)}}> <PlusIcon/> Create Agent</Button>
+            <h5 className="font-medium text-3xl">My agents</h5>
+            <Button className="text-shadow-accent text-xl" onClick={() => {setIsDialogOpen(true)}}> <PlusIcon/> Create Agent</Button>
             </div>
         </div>
     </>
