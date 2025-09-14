@@ -9,14 +9,20 @@ import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@
 
 export const agentsRouter = createTRPCRouter({
 
-    getOne: protectedProcedure.input(z.object({id : z.string()})).query(async ({input}) => {
+    getOne: protectedProcedure.input(z.object({id : z.string()}))
+    .query(async ({input,ctx}) => {
         const [existingAgent] = await db
             .select({
                 meetingCount : sql<number>`1`,
                 ...getTableColumns(agents),
             })
             .from(agents)
-            .where(eq(agents.id,input.id));
+            .where(and(eq(agents.id,input.id),eq(agents.userId,ctx.auth.user.id),));
+    
+        if (!existingAgent){
+            throw new TRPCError({code:"NOT_FOUND",message:"Agent not found"});
+        }
+        
         return existingAgent
 
         //await new Promise((resolve) => setTimeout(resolve,5000));
