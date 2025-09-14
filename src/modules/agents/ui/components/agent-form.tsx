@@ -58,10 +58,30 @@ export const AgentForm = ({
         toast.error(error.message);
         // check if error code is working or not, if not then redirect to update the session status
         },
+    });
+    
+    const updateAgent = trpc.agents.update.useMutation({
+        onSuccess: async () => {
+                await queryClient.invalidateQueries({
+                        queryKey: [["agents", "getMany"]]
+                    });
+
+                if (initialValues?.id){
+                    await queryClient.invalidateQueries({
+                        queryKey : [["agents","getOne"],{input : {id : initialValues.id}}] // i need to input the initialvalues.id here
+                    })
+              }
+            onSuccess?.();              
+        },
+
+        onError: (error) => {
+        toast.error(error.message);
+        // check if error code is working or not, if not then redirect to update the session status
+        },
     }); 
 
     const isEdit = !!initialValues?.id;
-    const isPending = createAgent.isPending;
+    const isPending = createAgent.isPending || updateAgent.isPending;
 
     useEffect(() => {
         if (initialValues) {
@@ -74,7 +94,7 @@ export const AgentForm = ({
 
     const onSubmit = (values: z.infer<typeof agentsInsertSchema>) => {
         if (isEdit) {
-            console.log("TODO: updateAgent");
+            updateAgent.mutate({ ...values, id: initialValues.id})
         } else {
             createAgent.mutate(values);
         }
@@ -119,7 +139,6 @@ export const AgentForm = ({
                     
                     {onCancel && (
                         <Button variant="ghost" disabled={isPending} type="button" onClick={() => onCancel()}>Cancel</Button>
-
                     )}
                     
                 </div>
