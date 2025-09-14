@@ -11,7 +11,7 @@ interface Props {
   }
   
 const Page = async ({params}:Props) => {
-    const { agentsId } = params;
+    const {agentsId} = await params;
 
     const queryClient = getQueryClient();
     
