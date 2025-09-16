@@ -10,5 +10,5 @@ export const MeetingsView = () => {
     search: "",
   });
 
-  return <div>{JSON.stringify(data)}</div>;
+  return <div> Data Table here</div>;
 };
