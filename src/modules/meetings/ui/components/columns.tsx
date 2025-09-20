@@ -7,8 +7,6 @@ import { CornerRightDown, CornerRightDownIcon, VideoIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { format } from "date-fns"
 import humanizeDuration from "humanize-duration"
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 import { CircleCheckIcon,CircleXIcon,ClockArrowUpIcon,ClockFadingIcon,CornerDownRightIcon,LoaderIcon} from "lucide-react"
 import { cn } from "@/lib/utils"
 
