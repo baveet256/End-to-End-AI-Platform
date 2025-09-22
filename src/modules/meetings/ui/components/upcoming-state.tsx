@@ -26,11 +26,10 @@ return (
                 <BanIcon/> Cancel Meeting
             </Button>
             <Button disabled={isCancelling} asChild className="w-full lg:w-auto">
-                <Link href={`/call/$(meetingId)`}>
-                <VideoIcon/> Cancel Meeting
+                <Link href={`/call/${meetingId}`}>  {/* ✅ Correct - uses ${} */}
+                    <VideoIcon/> Join Meeting
                 </Link>
             </Button>
-
         </div>
     </div>
 );
