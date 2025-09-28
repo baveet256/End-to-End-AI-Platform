@@ -1,22 +1,12 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { MeetingGetOne,MeetingGetMany } from "../../types"
+import { MeetingGetMany } from "../../types"
 import { GeneratedAvatar } from "@/components/generated-avatar"
-import { CornerRightDown, CornerRightDownIcon, VideoIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { format } from "date-fns"
-import humanizeDuration from "humanize-duration"
 import { CircleCheckIcon,CircleXIcon,ClockArrowUpIcon,ClockFadingIcon,CornerDownRightIcon,LoaderIcon} from "lucide-react"
-import { cn } from "@/lib/utils"
-
-function formatDuration(seconds:number){
-  return humanizeDuration(seconds*1000,{
-    largest : 1,
-    round: true,
-    units: ["h","m","s"],
-  });
-};
+import { cn, formatDuration } from "@/lib/utils"
 
 const statusIconMap = {
   upcoming: ClockArrowUpIcon,
