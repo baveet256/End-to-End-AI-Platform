@@ -2,7 +2,6 @@ import { trpc } from "@/trpc/client";
 import {Call,CallingState, StreamCall,StreamVideo,StreamVideoClient} from "@stream-io/video-react-sdk"
 import { LoaderIcon } from "lucide-react";
 import { useEffect,useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { CallUI } from "./call-ui";
 
