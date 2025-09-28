@@ -179,7 +179,7 @@ export async function POST(req:NextRequest){
         await db
             .update(meetings)
             .set({
-                recordintUrl:event.call_recording.url,
+                recordingUrl:event.call_recording.url,
             })
             .where(eq(meetings.id,meetingId));
         
