@@ -16,7 +16,7 @@ Use the following markdown structure for every output:
 Provide a detailed, engaging summary of the session's content. Focus on major features, user workflows, and any key takeaways. Write in a narrative style, using full sentences. Highlight unique or powerful aspects of the product, platform, or discussion.
 
 ### Notes
-Break down key content into thematic sections with timestamp ranges. Each section should summarize key points, actions, or demos in bullet format.
+Each section should summarize key points, actions, or demos in bullet format.
 
 Example:
 #### Section Name

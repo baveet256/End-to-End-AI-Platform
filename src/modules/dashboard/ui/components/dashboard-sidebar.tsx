@@ -38,7 +38,7 @@ export const DashboardSidebar = () =>{
         <Sidebar>
             <SidebarHeader className="text-sidebar-accent-foreground">
                 <Link href="/" className="flex items-center gap-2 px-2 pt-2"> <Image src="/logo.svg" height={48} width={48} alt="Meow.AI" />
-                <p className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.65_0.18_70)] via-[oklch(0.75_0.20_85)] to-[oklch(0.60_0.22_60)]">
+                <p className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-orange-400 to-amber-300">
   Meow.AI
 </p>
                 </Link>
