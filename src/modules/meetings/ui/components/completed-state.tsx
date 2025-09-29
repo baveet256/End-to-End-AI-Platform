@@ -8,6 +8,8 @@ import Link from "next/link";
 import { formatDate } from "date-fns";
 import { formatDuration } from "@/lib/utils";
 import Markdown from "react-markdown";
+import { Transcript } from "./transcript";
+import { ChatProvider } from "./chat-provider";
 
 interface Props {
   data: MeetingGetOne;
@@ -105,23 +107,7 @@ export const CompletedState = ({ data }: Props) => {
 
         {/* Tabs Content */}
 
-        {/* Recording Content */}
-        <TabsContent value="recording">
-          <div className="bg-zinc-900/70 backdrop-blur-md border border-zinc-700/30 rounded-xl p-4 flex justify-center items-center shadow-lg shadow-black/20">
-            {data?.recordingUrl ? (
-              <video
-                src={data.recordingUrl}
-                className="w-full rounded-lg shadow-lg shadow-black/30 border border-zinc-700/40"
-                controls
-              />
-            ) : (
-              <p className="text-zinc-400 text-center">
-                No recording available for this meeting.
-              </p>
-            )}
-          </div>
-        </TabsContent>
-
+        {/* Summary Content */}
         <TabsContent value="summary">
           <div className="bg-zinc-900/60 backdrop-blur-3xl border border-zinc-700/20 rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
             <div className="flex flex-col gap-4">
@@ -132,7 +118,7 @@ export const CompletedState = ({ data }: Props) => {
               </h2>
               
               {/* Agent Info */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 bg-zinc-800/40 rounded-xl p-3 shadow-inner border border-zinc-700/30 hover:scale-105 transition-transform duration-300 hover:shadow-lg hover:shadow-black/20">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 bg-zinc-800/40 rounded-xl p-3 shadow-inner border border-zinc-700/30 hover:scale-103 transition-transform duration-300 hover:shadow-lg hover:shadow-black/20">
                 <Link href={`/agents/${data.agent.id}`} className="flex items-center gap-2">
                   <GeneratedAvatar variant="botttsNeutral" seed={data.agent.name} className="w-10 h-10 rounded-full shadow-md border-2 border-amber-600/30" />
                   <span className="font-semibold text-lg text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-amber-200 drop-shadow-sm">
@@ -223,7 +209,35 @@ export const CompletedState = ({ data }: Props) => {
           </div>
         </TabsContent>
 
-        
+        {/* Transcript Content */}
+        <TabsContent value="transcript">
+          <div className="bg-zinc-900/70 backdrop-blur-md border border-zinc-700/30 rounded-xl p-4 shadow-lg shadow-black/20 min-h-[500px]">
+            <Transcript meetingId={data.id} />
+          </div>
+        </TabsContent>
+
+        {/* Recording Content */}
+        <TabsContent value="recording">
+          <div className="bg-zinc-900/70 backdrop-blur-md border border-zinc-700/30 rounded-xl p-4 flex justify-center items-center shadow-lg shadow-black/20">
+            {data?.recordingUrl ? (
+              <video
+                src={data.recordingUrl}
+                className="w-full rounded-lg shadow-lg shadow-black/30 border border-zinc-700/40"
+                controls
+              />
+            ) : (
+              <p className="text-zinc-400 text-center">
+                No recording available for this meeting.
+              </p>
+            )}
+          </div>
+        </TabsContent>
+
+        {/* Chat Content */}
+        <TabsContent value="chat">
+            <ChatProvider meetingId={data.id} meetingName={data.name}/>
+        </TabsContent>
+
       </Tabs>
     </div>
   );
