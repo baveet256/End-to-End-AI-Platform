@@ -56,7 +56,6 @@ export const DashboardUserButton = () =>{
                     <DrawerDescription>{data.user.email}</DrawerDescription>
                 </DrawerHeader>
                 <DrawerFooter>
-                    <Button variant={"outline"} onClick={()=>{}}><CreditCardIcon className="size-4 text-black"/> Billing </Button>
                     <Button variant={"outline"} onClick={onLogout}><LogOutIcon className="size-4 text-black"/> Logout</Button>
                 </DrawerFooter>
                 </DrawerContent>
@@ -90,10 +89,6 @@ export const DashboardUserButton = () =>{
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator/>
-                <DropdownMenuItem className="cursor-pointer flex items-center justify-between">
-                    Billing
-                    <CreditCardIcon className="size-4 "/>
-                </DropdownMenuItem>
                 <DropdownMenuItem onClick = {onLogout}className="cursor-pointer flex items-center justify-between">
                         Logout
                     <LogOutIcon className="size-4 "/>

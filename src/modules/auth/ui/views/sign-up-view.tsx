@@ -18,6 +18,7 @@ import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/com
 import { OctagonAlertIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
 const formSchema = z.object(
     {
@@ -114,111 +115,182 @@ useEffect(() => {
         <div className="flex flex-col gap-6">
             <Card className="overflow-hidden p-0">
                 <CardContent className=" grid p-0 md:grid-cols-2"> 
-                     <Form {...form}>
-                        <form  onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
-                            <div className="flex flex-col gap-6">
-                                <div className="flex flex-col items-center justify-center">
-                                    <h1 className="text-2xl font-bold"> Let&apos;s get started, Say Meow</h1>
-                                    <p className="text-muted-foreground text-balance "> Create your account</p>
-                                </div>
-                                <div className="grid gap-2"></div>
-                                 <FormField
-                                        control={form.control}
-                                        name="name"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                            <FormLabel>Name</FormLabel>
-                                            <FormControl>
-                                                <Input type="text" placeholder="baveet" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                            </FormItem>
-                                        )}
-                                        />
+                <Form {...form}>
+  <form
+    onSubmit={form.handleSubmit(onSubmit)}
+    className="p-6 md:p-8 flex flex-col gap-6"
+  >
+    {/* Header */}
+    <div className="flex flex-col items-center justify-center gap-2">
+      <h1 className="text-3xl font-extrabold text-gray-600 tracking-tight">
+        Let&apos;s get started 🐾
+      </h1>
+      <p className="text-sm text-gray-400 text-center">
+        Create your account and join the Meow.AI journey
+      </p>
+    </div>
 
-                                 <div className="grid gap-2"></div>
-                                 <FormField
-                                        control={form.control}
-                                        name="email"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                            <FormLabel>Email</FormLabel>
-                                            <FormControl>
-                                                <Input type="email" placeholder="m@baveet.com" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                            </FormItem>
-                                        )}
-                                        />
-                                
-                                <div className="grid gap-2"></div>
-                                 <FormField
-                                        control={form.control}
-                                        name="password"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                            <FormLabel>Password</FormLabel>
-                                            <FormControl>
-                                                <Input type="password" placeholder="*********" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                            </FormItem>
-                                        )}
-                                        />
-                                <div className="grid gap-2"></div>
-                                 <FormField
-                                        control={form.control}
-                                        name="confirmPassword"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                            <FormLabel>Confirm Password</FormLabel>
-                                            <FormControl>
-                                                <Input type="password" placeholder="*********" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                            </FormItem>
-                                        )}
-                                        />
-                                
-                                
-                                </div>
-                                {!!error && (
-                                    <Alert className="bg-destructive/10 border-none">
-                                        <OctagonAlertIcon className="h-4 w-4 !text-destructive"/>
-                                        <AlertTitle>{error} </AlertTitle>
-                                    </Alert>
-                                )}
-                                <Button disabled={pending} type="submit" className="w-full"> Sign in</Button>
-                                <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                                    <span className="bg-card text-muted-foreground relative z-10 px-2"> Or continue with</span>
-                    
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <Button variant="outline" onClick= {()=>{
-                                        authClient.signIn.social({
-                                            provider: "google",
-                                        })
-                                    }} type="button" className="w-full"> Google </Button>
-                                    <Button variant="outline"  onClick= {()=>{
-                                        authClient.signIn.social({
-                                            provider: "github",
-                                        })
-                                    }} type="button" className="w-full"> Github </Button>
-                                </div>
-                                <div className="text-center text-sm">
-                                    Already have an account? <Link href={"/sign-in"} className="underline underline-offset-4"> sign in</Link>
-                                </div>
-                        </form>
-                    </Form>
+    {/* Name */}
+    <FormField
+      control={form.control}
+      name="name"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="text-gray-400">Name</FormLabel>
+          <FormControl>
+            <Input
+              type="text"
+              placeholder="baveet"
+              {...field}
+              className="bg-zinc-900/70 border border-zinc-700 rounded-xl 
+                         focus:ring-2 focus:ring-amber-400 text-white placeholder:text-gray-100"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
 
-                    <div ref={containerRef}className="bg-gradient-to-b from-amber-200 via-orange-300 to-amber-600 relative hidden md:flex flex-col gap-y-4 items-center justify-center rounded-2xl shadow-lg p-8">
-                    <img ref = {logoRef}src="/logo.svg" alt="Logo" className="h-[120px] w-[120px] drop-shadow-lg" />
+    {/* Email */}
+    <FormField
+      control={form.control}
+      name="email"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="text-gray-400">Email</FormLabel>
+          <FormControl>
+            <Input
+              type="email"
+              placeholder="m@baveet.com"
+              {...field}
+              className="bg-zinc-900/70 border border-zinc-700 rounded-xl 
+                         focus:ring-2 focus:ring-amber-400 text-white placeholder:text-gray-100"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
 
-                    <p className="font-bold text-3xl tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.7_0.18_70)] via-[oklch(0.5_0.20_85)] to-[oklch(0.3_0.22_60)] animate-gradient-shimmer hover:drop-shadow-[0_0_12px_oklch(0.75_0.2_85)] transition-all duration-500">
+    {/* Password */}
+    <FormField
+      control={form.control}
+      name="password"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="text-gray-400">Password</FormLabel>
+          <FormControl>
+            <Input
+              type="password"
+              placeholder="*********"
+              {...field}
+              className="bg-zinc-900/70 border border-zinc-700 rounded-xl 
+                         focus:ring-2 focus:ring-amber-400 text-white placeholder:text-gray-100"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+
+    {/* Confirm Password */}
+    <FormField
+      control={form.control}
+      name="confirmPassword"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="text-gray-400">Confirm Password</FormLabel>
+          <FormControl>
+            <Input
+              type="password"
+              placeholder="*********"
+              {...field}
+              className="bg-zinc-900/70 border border-zinc-700 rounded-xl 
+                         focus:ring-2 focus:ring-amber-400 text-white placeholder:text-gray-100"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+
+    {/* Error */}
+    {!!error && (
+      <Alert className="bg-red-900/30 border border-red-700/50 rounded-xl">
+        <OctagonAlertIcon className="h-4 w-4 text-red-500" />
+        <AlertTitle className="text-red-400">{error}</AlertTitle>
+      </Alert>
+    )}
+
+    {/* Submit */}
+    <Button
+      disabled={pending}
+      type="submit"
+      className="w-full bg-gradient-to-r from-amber-400 to-orange-500 
+                 text-black font-semibold rounded-xl shadow-lg 
+                 hover:shadow-amber-500/40 hover:scale-[1.02] 
+                 transition-all duration-200"
+    >
+      Sign Up
+    </Button>
+
+    {/* Divider */}
+    <div className="relative text-center text-sm my-2">
+      <span className="px-3 bg-zinc-900 rounded-xl  text-gray-100 relative z-10">
+        Or continue with
+      </span>
+      <div className="absolute inset-0 top-1/2 border-t border-zinc-700" />
+    </div>
+
+    {/* Social logins */}
+    <div className="grid grid-cols-2 gap-4">
+      <Button
+        disabled={pending}
+        onClick={() => authClient.signIn.social({ provider: "google" })}
+        type="button"
+        className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-xl 
+                   hover:border-amber-400 hover:shadow-lg hover:shadow-amber-400/20 
+                   transition-all"
+      >
+        <FaGoogle className="mr-2 text-gray-100" /> Google
+      </Button>
+
+      <Button
+        disabled={pending}
+        onClick={() => authClient.signIn.social({ provider: "github" })}
+        type="button"
+        className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-xl 
+                   hover:border-amber-400 hover:shadow-lg hover:shadow-amber-400/20 
+                   transition-all"
+      >
+        <FaGithub className="mr-2 text-gray-300" /> GitHub
+      </Button>
+    </div>
+
+    {/* Footer */}
+    <div className="text-center text-sm text-gray-400 mt-4">
+      Already have an account?{" "}
+      <Link
+        href="/sign-in"
+        className="text-amber-400 hover:text-amber-500 underline underline-offset-4"
+      >
+        Sign in
+      </Link>
+    </div>
+  </form>
+</Form>
+
+
+                    <div ref = {containerRef} className="bg-gradient-to-b from-pink-200 via-orange-300 to-amber-600 relative hidden md:flex flex-col gap-y-4 items-center justify-center rounded-2xl shadow-lg p-8">
+                    <img ref = {logoRef} src="/logo.svg" alt="Logo" className="h-[120px] w-[120px] drop-shadow-lg" />
+
+                    <p className="font-bold text-3xl tracking-wide bg-clip-text text-transparent bg-gradient-to-b from-amber-800 via-orange-500 to-pink-700 animate-gradient-shimmer hover:drop-shadow-[0_0_12px_oklch(0.75_0.2_85)] transition-all duration-200">
                         Meow.AI
                     </p>
                     <span className="text-sm text-gray-700 italic">Smart like a cat 🐾</span>
                     </div>
+
+                    
 
                 </CardContent> 
             </Card>

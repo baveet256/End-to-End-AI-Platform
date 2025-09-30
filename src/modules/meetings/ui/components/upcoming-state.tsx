@@ -25,7 +25,7 @@ return (
             >
                 <BanIcon/> Cancel Meeting
             </Button>
-            <Button disabled={isCancelling} asChild className="w-full lg:w-auto">
+            <Button disabled={isCancelling} asChild className="w-full lg:w-auto bg-gradient-to-r from-amber-400 to-orange-500 ">
                 <Link href={`/call/${meetingId}`}>  {/* ✅ Correct - uses ${} */}
                     <VideoIcon/> Join Meeting
                 </Link>

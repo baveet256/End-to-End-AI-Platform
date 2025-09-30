@@ -7,11 +7,9 @@ interface Props {
 
 import { Breadcrumb,BreadcrumbItem,BreadcrumbLink,BreadcrumbList,BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
-import { DropdownMenu,DropdownMenuTrigger,DropdownMenuItem,DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
-import { agents } from "@/db/schema";
-import { ChevronRightIcon,TrashIcon,PencilIcon,MoreVerticalIcon } from "lucide-react";
+import { ChevronRightIcon} from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+
 export const MeetingsIdViewHeader = ({
 
     meetingId,
@@ -43,27 +41,7 @@ export const MeetingsIdViewHeader = ({
                         </BreadcrumbLink>
                     </BreadcrumbItem>
                 </BreadcrumbList>
-            </Breadcrumb>
-
-            <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="ghost">
-                        <MoreVerticalIcon/>
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={onEdit}>
-                        <PencilIcon className="size-4 text-black"/>
-                        Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={onRemove}>
-                        <TrashIcon className="size-4 text-black"/>
-                        Delete
-                    </DropdownMenuItem>
-
-                </DropdownMenuContent>
-            </DropdownMenu>
-
+            </Breadcrumb> 
         </div>
     );
 

@@ -52,7 +52,7 @@ export const DashboardSidebar = () => {
       </SidebarHeader>
 
       <div className="px-4 py-2">
-        <Separator className="bg-zinc-700/30" />
+        <Separator className="bg-zinc-600" />
       </div>
 
       {/* Menu */}
@@ -89,7 +89,7 @@ export const DashboardSidebar = () => {
         </SidebarGroup>
 
         <div className="px-4 py-2">
-          <Separator className="bg-zinc-700/30" />
+          <Separator className="bg-zinc-600" />
         </div>
       </SidebarContent>
 
