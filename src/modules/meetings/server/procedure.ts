@@ -299,4 +299,46 @@ export const meetingsRouter = createTRPCRouter({
             totalPages : totalPages
         };
     }),
+
+
+checkMeetingLimit: protectedProcedure
+.query(async ({ ctx }) => {
+  const UNRESTRICTED_EMAILS = [
+    "baveetstudy@gmail.com", 
+  ];
+  const MAX_FREE_MEETINGS = 3;
+
+  const userId = ctx.auth.user.id;
+  const userEmail = ctx.auth.user.email;
+
+  // Unrestricted users bypass all checks
+  if (UNRESTRICTED_EMAILS.includes(userEmail)) {
+    return { canProceed: true, isUnlimited: true };
+  }
+
+  // Count total meetings created by this user
+  const meetingCount = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(meetings)
+    .where(eq(meetings.userId, userId));
+
+  const count = Number(meetingCount[0]?.count) || 0;
+
+  if (count >= MAX_FREE_MEETINGS) {
+    return {
+      canProceed: false,
+      isUnlimited: false,
+      used: count,
+      limit: MAX_FREE_MEETINGS,
+    };
+  }
+
+  return {
+    canProceed: true,
+    isUnlimited: false,
+    used: count,
+    limit: MAX_FREE_MEETINGS,
+  };
+}),
+
 }) 
