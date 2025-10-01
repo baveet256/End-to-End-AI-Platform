@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { agents, meetings, user } from "@/db/schema";
 import { inngest } from "@/inngest/client";
 import { StreamTranscriptItem } from "@/modules/meetings/types";
-import { eq, inArray, sum } from "drizzle-orm";
+import { eq, inArray} from "drizzle-orm";
 import JSONL from "jsonl-parse-stringify"
 import {createAgent, openai, TextMessage} from "@inngest/agent-kit"
 

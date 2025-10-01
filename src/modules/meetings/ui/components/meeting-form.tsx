@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 
 import { trpc } from "@/trpc/client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 

@@ -1,10 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CommandSelect } from "./command-select";
 import { GeneratedAvatar } from "./generated-avatar";
 import { useMeetingFilters } from "@/modules/meetings/hooks/use-meetings-filter";
 import { trpc } from "@/trpc/client";
-import { Divide } from "lucide-react";
 
 
 export const AgentIdFilter = () => {

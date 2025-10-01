@@ -8,7 +8,6 @@ interface Props {
 import { Breadcrumb,BreadcrumbItem,BreadcrumbLink,BreadcrumbList,BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 import { DropdownMenu,DropdownMenuTrigger,DropdownMenuItem,DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
-import { agents } from "@/db/schema";
 import { ChevronRightIcon,TrashIcon,PencilIcon,MoreVerticalIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

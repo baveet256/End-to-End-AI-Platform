@@ -1,7 +1,4 @@
-import { meetings } from "@/db/schema";
-
 import { StreamTheme, useCall } from "@stream-io/video-react-sdk";
-import { useSearch } from "@stream-io/video-react-sdk/dist/src/components/Search/hooks";
 import { useState } from "react";
 import { CallLobby } from "./call-lobby";
 import { CallActive } from "./call-active";
