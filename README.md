@@ -8,8 +8,6 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-![Meow.AI Banner](https://via.placeholder.com/1200x400/FF6B6B/FFFFFF?text=Meow.AI+-+AI+Powered+Meeting+Assistant)
-
 ---
 
 ## 🎯 What is Meow.AI?
