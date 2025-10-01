@@ -128,7 +128,7 @@ export const AgentForm = ({
                             Instructions 
                         </FormLabel> 
                         <FormControl>
-                            <Textarea {...field} placeholder="You are a technical interviewer based on the information in the resume here"/>
+                            <Textarea {...field} placeholder="You are a technical interviewer. The user will provide topics, skills, or goals instead of a resume. Use these inputs to design and ask relevant technical and problem-solving interview questions. Tailor the difficulty to the user’s level, and give feedback on their answers."/>
                         </FormControl>
                         <FormMessage/>
                     </FormItem>

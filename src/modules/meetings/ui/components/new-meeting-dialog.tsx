@@ -22,7 +22,7 @@ export const NewMeetingDialog = ({
     useEffect(() => {
         if (open && limitCheck && !limitCheck.canProceed) {
             toast.error(
-                `You've reached the 3 meeting demo limit. Each meeting uses paid AI services. Create a new account to continue exploring!`,
+                `You've reached the demo limit. Each meeting uses paid AI services. Create a new account to continue exploring!`,
                 {
                     duration: 5000,
                     position: "top-center",

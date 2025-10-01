@@ -38,8 +38,8 @@ export const HomeView = () => {
 
   <p className="mt-4 text-gray-600 font-semibold">
     ⚠️ This is a <span className="text-orange-400 font-bold">trial/demo SaaS</span>. Running real-time AI calls costs me money and as current F1 student in the US, I cannot implement payments. 
-    You are allowed <span className="text-pink-400 font-bold">3 meetings</span> only. You cannot delete or edit meetings. Once a meeting is done, you can view the recording, transcripts, and AI chat. 
-    So in summary, you get 3 chances to try this app — enjoy your demo!
+    You are allowed <span className="text-pink-400 font-bold">3 - 4 meetings</span> only. You cannot delete or edit meetings. Once a meeting is done, you can view the recording, transcripts, and AI chat. 
+    So in summary, you get limited chances to try this app — enjoy your demo!
   </p>
 </p>
 

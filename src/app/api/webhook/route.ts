@@ -105,7 +105,8 @@ export async function POST(req:NextRequest){
         const realtimeClient = await StreamVideo.video.connectOpenAi({
             call,
             openAiApiKey: process.env.OPENAI_API_KEY!,
-            agentUserId: existingAgent.id
+            agentUserId: existingAgent.id,
+            model: "gpt-4o-mini-realtime-preview-2024-12-17",
         })
 
         realtimeClient.updateSession({
