@@ -112,6 +112,8 @@ export async function POST(req:NextRequest){
             instructions:existingAgent.instructions
         })
 
+        return NextResponse.json({success: true}); // ← Added return
+
     }else if (eventType === "call.session_participant_left"){
         const event = payload as CallSessionParticipantLeftEvent;
         const meetingId = event.call_cid.split(":")[1];
@@ -127,6 +129,9 @@ export async function POST(req:NextRequest){
         }
         const call = StreamVideo.video.call("default",meetingId);
         await call.end();
+
+        return NextResponse.json({success: true}); // ← Added return
+
     }else if (eventType === "call.session_ended"){
         const event = payload as CallEndedEvent;
         const meetingId = event.call.custom?.meetingId;
@@ -148,6 +153,9 @@ export async function POST(req:NextRequest){
             })
             .where(and (eq(meetings.id,meetingId),eq(meetings.status,"active"
             )) );
+
+        return NextResponse.json({success: true}); // ← Added return
+
     }else if(eventType === "call.transcription_ready"){
         const event = payload as CallTranscriptionReadyEvent;
         const meetingId = event.call_cid.split(":")[1];
@@ -180,6 +188,8 @@ export async function POST(req:NextRequest){
             }
          })
 
+        return NextResponse.json({success: true}); // ← Added return
+
     }else if(eventType === "call.recording_ready"){
         const event = payload as CallRecordingReadyEvent ;
         const meetingId = event.call_cid.split(":")[1];
@@ -190,6 +200,8 @@ export async function POST(req:NextRequest){
                 recordingUrl:event.call_recording.url,
             })
             .where(eq(meetings.id,meetingId));
+
+        return NextResponse.json({success: true}); // ← Added return
         
     }else if(eventType === "message.new"){
         const event = payload as MessageNewEvent;
@@ -295,4 +307,7 @@ export async function POST(req:NextRequest){
         
         return NextResponse.json({success: true});
     }
+
+    // ← Added final fallback return for unknown event types
+    return NextResponse.json({success: true});
 }

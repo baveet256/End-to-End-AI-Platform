@@ -3,14 +3,14 @@ import { LoadingState } from "@/components/loading-state";
 import { AgentIdView } from "@/modules/agents/ui/views/agent-id-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
+import { JSX, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 interface Props {
-    params: { agentsId: string };
-  }
+    params: Promise<{ agentsId: string }>;
+}
   
-const Page = async ({params}:Props) => {
+const Page = async ({params}: Props): Promise<JSX.Element> => {
     const {agentsId} = await params;
 
     const queryClient = getQueryClient();
