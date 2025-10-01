@@ -164,7 +164,7 @@ useEffect(() => {
                 <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="p-6 md:p-8 flex flex-col gap-8"
+                    className="p-6 md:p-8 flex flex-col gap-9"
                 >
                     {/* Header */}
                     <div className="flex flex-col items-center justify-center gap-2">
@@ -285,7 +285,7 @@ useEffect(() => {
                 </Form>
 
 
-                <div ref = {containerRef} className="bg-gradient-to-b from-pink-200 via-orange-300 to-amber-600 relative hidden md:flex flex-col gap-y-2 items-start justify-start rounded-2xl shadow-lg p-5 overflow-y-auto max-h-[600px]">
+                <div ref = {containerRef} className="bg-gradient-to-b from-pink-200 via-orange-300 to-amber-600 relative hidden md:flex flex-col gap-y-1 items-start justify-start rounded-2xl shadow-lg p-5 overflow-y-auto max-h-[600px]">
                     <div className="w-full flex flex-col items-center gap-1 mb-2">
                         <img ref = {logoRef} src="/logo.svg" alt="Logo" className="h-[70px] w-[70px] drop-shadow-lg transition-transform duration-200" />
                         <p className="font-bold text-xl tracking-wide bg-clip-text text-transparent bg-gradient-to-b from-amber-800 via-orange-500 to-pink-700">
