@@ -1,6 +1,6 @@
 import { eq,and,not } from "drizzle-orm";
 import {OpenAI} from "openai"
-
+import { Client } from "@upstash/qstash";
 import { NextRequest,NextResponse } from "next/server";
 import {
     MessageNewEvent,
@@ -130,34 +130,23 @@ export async function POST(req:NextRequest){
     // Skip time limit for unrestricted emails
         if (meetingOwner?.email && UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
             console.log(`♾️ Unrestricted user - no time limit for meeting ${meetingId}`);
-            return NextResponse.json({success: true});
+            return NextResponse.json({ success: true });
         }
 
-        // Meeting limiting
-
+        const qstash = new Client({ token: process.env.QSTASH_TOKEN! });
+        // Schedule meeting end after 1 minute using QStash
         const DEMO_TIME_LIMIT = 1 * 60 * 1000; // 1 minute
-        let disconnectTimer: NodeJS.Timeout | null = null;
+        
+        await qstash.publishJSON({
+            url: `${process.env.NEXT_PUBLIC_APP_URL}/api/end-meeting`,
+            body: { meetingId },
+            delay: DEMO_TIME_LIMIT / 1000, // seconds
+        });
+        
+        console.log(`⏱️ Auto-end scheduled for meeting ${meetingId} in 1 minute`);
+      
 
-        disconnectTimer = setTimeout(async () => {
-        try {
-            console.log(`⏱️ Time limit reached for meeting ${meetingId}, disconnecting...`);
-            await realtimeClient.disconnect();
-            await call.end();
-            
-            await db
-                .update(meetings)
-                .set({
-                    status: "completed",
-                    endedAt: new Date(),
-                })
-                .where(eq(meetings.id, meetingId));
-                
-            console.log(`✅ Meeting ${meetingId} auto-ended successfully`);
-        } catch (error) {
-            console.error(`❌ Error auto-ending meeting ${meetingId}:`, error);
-        }
-    }, DEMO_TIME_LIMIT);
-    
+      
         return NextResponse.json({success: true}); // ← Added return
 
     }else if (eventType === "call.session_participant_left"){
