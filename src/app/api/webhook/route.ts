@@ -12,12 +12,13 @@ import {
 
 } from "@stream-io/node-sdk";
 import { db } from "@/db";
-import { agents,meetings } from "@/db/schema";
+import { agents,meetings, user } from "@/db/schema";
 import { StreamVideo } from "@/lib/stream-video";
 import { inngest } from "@/inngest/client";
 import { streamChat } from "@/lib/stream-chat";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { GeneratedAvatarUri } from "@/lib/avatar";
+import { UNRESTRICTED_EMAILS } from "@/constants";
 
 const openAiClient = new OpenAI({apiKey: process.env.OPENAI_API_KEY!});
 
@@ -112,6 +113,46 @@ export async function POST(req:NextRequest){
         realtimeClient.updateSession({
             instructions:existingAgent.instructions
         })
+
+        const [meetingOwner] = await db
+        .select()
+        .from(user) // Adjust to your users table name
+        .where(eq(user.id, existingMeeting.userId));
+        
+    // Skip time limit for unrestricted emails
+        if (meetingOwner?.email && UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
+            console.log(`♾️ Unrestricted user - no time limit for meeting ${meetingId}`);
+            return NextResponse.json({success: true});
+        }
+
+        //
+
+        const DEMO_TIME_LIMIT = 1 * 60 * 1000; // 1 minute
+    
+    const disconnectTimer = setTimeout(async () => {
+        try {
+            console.log(`⏱️ Time limit reached for meeting ${meetingId}, disconnecting...`);
+            await realtimeClient.disconnect();
+            await call.end();
+            
+            await db
+                .update(meetings)
+                .set({
+                    status: "completed",
+                    endedAt: new Date(),
+                })
+                .where(eq(meetings.id, meetingId));
+                
+            console.log(`✅ Meeting ${meetingId} auto-ended successfully`);
+        } catch (error) {
+            console.error(`❌ Error auto-ending meeting ${meetingId}:`, error);
+        }
+    }, DEMO_TIME_LIMIT);
+
+    realtimeClient.on('disconnect', () => {
+        clearTimeout(disconnectTimer);
+        console.log(`🧹 Cleared timer for meeting ${meetingId}`);
+    });
 
         return NextResponse.json({success: true}); // ← Added return
 

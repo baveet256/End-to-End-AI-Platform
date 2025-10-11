@@ -4,7 +4,7 @@ import { agents, meetings, user } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
 import { and, count, desc, eq, getTableColumns, ilike, inArray, sql } from "drizzle-orm";
 import {z} from "zod";
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@/constants";
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE, UNRESTRICTED_EMAILS } from "@/constants";
 import { meetingsInsertSchema, meetingsUpdateSchema } from "../schemas";
 import { MeetingStatus, StreamTranscriptItem } from "../types";
 import {StreamVideo} from "@/lib/stream-video";
@@ -303,9 +303,7 @@ export const meetingsRouter = createTRPCRouter({
 
 checkMeetingLimit: protectedProcedure
 .query(async ({ ctx }) => {
-  const UNRESTRICTED_EMAILS = [
-    "baveetstudy@gmail.com", 
-  ];
+
   const MAX_FREE_MEETINGS = 3;
 
   const userId = ctx.auth.user.id;
