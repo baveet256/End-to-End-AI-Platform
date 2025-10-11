@@ -103,6 +103,11 @@ export async function POST(req:NextRequest){
 
         const call = StreamVideo.video.call("default",meetingId);
 
+        const [meetingOwner] = await db
+        .select()
+        .from(user) // Adjust to your users table name
+        .where(eq(user.id, existingMeeting.userId));
+
         const realtimeClient = await StreamVideo.video.connectOpenAi({
             call,
             openAiApiKey: process.env.OPENAI_API_KEY!,
@@ -110,14 +115,17 @@ export async function POST(req:NextRequest){
             model: "gpt-4o-mini-realtime-preview-2024-12-17",
         })
 
-        realtimeClient.updateSession({
-            instructions:existingAgent.instructions
-        })
+        try {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            realtimeClient.updateSession({
+                instructions: existingAgent.instructions
+            })
+            console.log('✅ Session updated successfully');
+        } catch (error) {
+            console.error('❌ Error updating session:', error);
+        }
 
-        const [meetingOwner] = await db
-        .select()
-        .from(user) // Adjust to your users table name
-        .where(eq(user.id, existingMeeting.userId));
+      
         
     // Skip time limit for unrestricted emails
         if (meetingOwner?.email && UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
@@ -125,11 +133,12 @@ export async function POST(req:NextRequest){
             return NextResponse.json({success: true});
         }
 
-        //
+        // Meeting limiting
 
         const DEMO_TIME_LIMIT = 1 * 60 * 1000; // 1 minute
-    
-    const disconnectTimer = setTimeout(async () => {
+        let disconnectTimer: NodeJS.Timeout | null = null;
+
+        disconnectTimer = setTimeout(async () => {
         try {
             console.log(`⏱️ Time limit reached for meeting ${meetingId}, disconnecting...`);
             await realtimeClient.disconnect();
@@ -148,12 +157,7 @@ export async function POST(req:NextRequest){
             console.error(`❌ Error auto-ending meeting ${meetingId}:`, error);
         }
     }, DEMO_TIME_LIMIT);
-
-    realtimeClient.on('disconnect', () => {
-        clearTimeout(disconnectTimer);
-        console.log(`🧹 Cleared timer for meeting ${meetingId}`);
-    });
-
+    
         return NextResponse.json({success: true}); // ← Added return
 
     }else if (eventType === "call.session_participant_left"){
