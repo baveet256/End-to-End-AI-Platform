@@ -119,9 +119,11 @@ export const endMeetingOnTimeLimit = inngest.createFunction(
   },
   { event: "meeting/time-limit-reached" },
   async ({ event, step }) => {
-      const { meetingId, callId } = event.data;
+      const { meetingId, callId,timeLimit } = event.data;
 
       // Check if meeting is still active
+      await step.sleep("wait-for-time-limit", `${timeLimit}s`);
+      
       const meetingStatus = await step.run("check-meeting-status", async () => {
           const [meeting] = await db
               .select()

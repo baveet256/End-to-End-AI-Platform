@@ -127,20 +127,18 @@ export async function POST(req:NextRequest){
 
       
     // Skip time limit for unrestricted emails
-        // if (meetingOwner?.email && UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
-        //     console.log(`♾️ Unrestricted user - no time limit for meeting ${meetingId}`);
-        //     return NextResponse.json({ success: true });
-        // }
-
-        const DEMO_TIME_LIMIT = 10 * 1000; // 1 minute
+        if (meetingOwner?.email && UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
+            console.log(`♾️ Unrestricted user - no time limit for meeting ${meetingId}`);
+            return NextResponse.json({ success: true });
+        }
 
         await inngest.send({
             name: "meeting/time-limit-reached",
             data: { 
                 meetingId,
                 callId: meetingId,
+                timeLimit: 10
             },
-            ts: Date.now() + DEMO_TIME_LIMIT, // Schedule for future
         });
         
         console.log(`⏱️ Auto-end scheduled for meeting ${meetingId} in 1 minute`);
