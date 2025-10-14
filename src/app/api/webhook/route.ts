@@ -126,28 +126,27 @@ export async function POST(req:NextRequest){
         }
 
       
-        
     // Skip time limit for unrestricted emails
         if (meetingOwner?.email && UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
             console.log(`♾️ Unrestricted user - no time limit for meeting ${meetingId}`);
             return NextResponse.json({ success: true });
         }
 
-        const qstash = new Client({ token: process.env.QSTASH_TOKEN! });
-        // Schedule meeting end after 1 minute using QStash
         const DEMO_TIME_LIMIT = 1 * 60 * 1000; // 1 minute
-        
-        await qstash.publishJSON({
-            url: `${process.env.NEXT_PUBLIC_APP_URL}/api/end-meeting`,
-            body: { meetingId },
-            delay: DEMO_TIME_LIMIT / 1000, // seconds
+
+        await inngest.send({
+            name: "meeting/time-limit-reached",
+            data: { 
+                meetingId,
+                callId: meetingId,
+            },
+            ts: Date.now() + DEMO_TIME_LIMIT, // Schedule for future
         });
         
         console.log(`⏱️ Auto-end scheduled for meeting ${meetingId} in 1 minute`);
-      
+        
+        return NextResponse.json({ success: true });
 
-      
-        return NextResponse.json({success: true}); // ← Added return
 
     }else if (eventType === "call.session_participant_left"){
         const event = payload as CallSessionParticipantLeftEvent;
