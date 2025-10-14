@@ -114,17 +114,6 @@ export async function POST(req:NextRequest){
             agentUserId: existingAgent.id,
             model: "gpt-4o-mini-realtime-preview-2024-12-17",
         })
-
-        try {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            realtimeClient.updateSession({
-                instructions: existingAgent.instructions
-            })
-            console.log('✅ Session updated successfully');
-        } catch (error) {
-            console.error('❌ Error updating session:', error);
-        }
-
       
     // Skip time limit for unrestricted emails
         if (meetingOwner?.email && UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
@@ -142,6 +131,18 @@ export async function POST(req:NextRequest){
         });
         
         console.log(`⏱️ Auto-end scheduled for meeting ${meetingId} in 1 minute`);
+
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            realtimeClient.updateSession({
+                instructions: existingAgent.instructions
+            })
+            console.log('✅ Session updated successfully');
+        } catch (error) {
+            console.error('❌ Error updating session:', error);
+        }
+
         
         return NextResponse.json({ success: true });
 
