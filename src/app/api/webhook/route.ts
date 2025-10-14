@@ -1,6 +1,5 @@
 import { eq,and,not } from "drizzle-orm";
 import {OpenAI} from "openai"
-import { Client } from "@upstash/qstash";
 import { NextRequest,NextResponse } from "next/server";
 import {
     MessageNewEvent,
@@ -116,22 +115,16 @@ export async function POST(req:NextRequest){
         })
       
     // Skip time limit for unrestricted emails
-        if (meetingOwner?.email && UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
-            console.log(`♾️ Unrestricted user - no time limit for meeting ${meetingId}`);
-            return NextResponse.json({ success: true });
+        if (!meetingOwner?.email || !UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
+            await call.update({
+                settings_override: {
+                    limits: {
+                        max_duration_seconds: 10
+                    }
+                }
+            });
+            console.log(`⏱️ Time limit set to 10 seconds for meeting ${meetingId}`);
         }
-
-        await inngest.send({
-            name: "meeting/time-limit-reached",
-            data: { 
-                meetingId,
-                callId: meetingId,
-                timeLimit: 10
-            },
-        });
-        
-        console.log(`⏱️ Auto-end scheduled for meeting ${meetingId} in 1 minute`);
-
 
         try {
             await new Promise(resolve => setTimeout(resolve, 500));
