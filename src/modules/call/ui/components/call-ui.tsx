@@ -1,42 +1,44 @@
-import { StreamTheme, useCall } from "@stream-io/video-react-sdk";
-import { useState } from "react";
+import { StreamTheme, useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
+import { useEffect, useState } from "react";
 import { CallLobby } from "./call-lobby";
 import { CallActive } from "./call-active";
 import { CallEnded } from "./call-ended";
 
 interface Props {
-    meetingName:string;
+  meetingName: string;
 }
 
-export const CallUI = ({meetingName}:Props) =>{
+export const CallUI = ({ meetingName }: Props) => {
+  const call = useCall();
+  const [show, setShow] = useState<"lobby" | "call" | "ended">("lobby");
 
-    const call = useCall();
+  const { useCallEndedAt } = useCallStateHooks();
+  const callEndedAt = useCallEndedAt();
 
-    const [show,setShow] = useState< "lobby" | "call" | "ended">("lobby");
+  const handleJoin = async () => {
+    if (!call) return;
+    await call.join();
+    setShow("call");
+  };
 
-    const handleJoin = async () => {
+  const handleLeave = async () => {
+    if (!call) return;
+    await call.endCall();
+    setShow("ended");
+  };
 
-        if(!call) return;
-
-        await call.join();
-        setShow("call");
-
+  // 🔥 Automatically detect if Stream ends the call (time limit, user disconnect, etc.)
+  useEffect(() => {
+    if (callEndedAt) {
+      setShow("ended");
     }
-    const handleLeave =  () => {
+  }, [callEndedAt]);
 
-        if(!call) return;
-
-        call.endCall();
-        setShow("ended");
-
-    }
-
-    return (
-        <StreamTheme className="h-full">
-            {show === "lobby" && <CallLobby onJoin={handleJoin}/>}
-            {show === "call" && <CallActive onLeave={handleLeave} meetingName={meetingName}/>}
-            {show === "ended" && <CallEnded/>}
-        </StreamTheme>
-    );
-
-}
+  return (
+    <StreamTheme className="h-full">
+      {show === "lobby" && <CallLobby onJoin={handleJoin} />}
+      {show === "call" && <CallActive onLeave={handleLeave} meetingName={meetingName} />}
+      {show === "ended" && <CallEnded />}
+    </StreamTheme>
+  );
+};
