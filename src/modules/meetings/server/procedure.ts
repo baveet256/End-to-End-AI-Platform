@@ -304,7 +304,7 @@ export const meetingsRouter = createTRPCRouter({
 checkMeetingLimit: protectedProcedure
 .query(async ({ ctx }) => {
 
-  const MAX_FREE_MEETINGS = 1;
+  const MAX_FREE_MEETINGS = 2;
 
   const userId = ctx.auth.user.id;
   const userEmail = ctx.auth.user.email;

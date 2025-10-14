@@ -112,11 +112,11 @@ export async function POST(req:NextRequest){
             await call.update({
                 settings_override: {
                     limits: {
-                        max_duration_seconds: 10
+                        max_duration_seconds: 600
                     }
                 }
             });
-            console.log(`⏱️ Time limit set to 10 seconds for meeting ${meetingId}`);
+            console.log(`⏱️ Time limit set to 10 minutes for meeting ${meetingId}`);
         }
 
         const realtimeClient = await StreamVideo.video.connectOpenAi({
