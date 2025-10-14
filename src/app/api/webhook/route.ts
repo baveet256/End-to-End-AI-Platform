@@ -107,15 +107,8 @@ export async function POST(req:NextRequest){
         .from(user) // Adjust to your users table name
         .where(eq(user.id, existingMeeting.userId));
 
-        const realtimeClient = await StreamVideo.video.connectOpenAi({
-            call,
-            openAiApiKey: process.env.OPENAI_API_KEY!,
-            agentUserId: existingAgent.id,
-            model: "gpt-4o-mini-realtime-preview-2024-12-17",
-        })
-      
-    // Skip time limit for unrestricted emails
-        if (!meetingOwner?.email || !UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
+         // Skip time limit for unrestricted emails
+         if (!meetingOwner?.email || !UNRESTRICTED_EMAILS.includes(meetingOwner.email)) {
             await call.update({
                 settings_override: {
                     limits: {
@@ -125,6 +118,15 @@ export async function POST(req:NextRequest){
             });
             console.log(`⏱️ Time limit set to 10 seconds for meeting ${meetingId}`);
         }
+
+        const realtimeClient = await StreamVideo.video.connectOpenAi({
+            call,
+            openAiApiKey: process.env.OPENAI_API_KEY!,
+            agentUserId: existingAgent.id,
+            model: "gpt-4o-mini-realtime-preview-2024-12-17",
+        })
+      
+   
 
         try {
             await new Promise(resolve => setTimeout(resolve, 500));
